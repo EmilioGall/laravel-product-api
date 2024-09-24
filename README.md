@@ -1,4 +1,4 @@
-📚 esercizio di oggi: Laravel Product API
+📚 esercizio: Laravel Product API
 nome repo: **laravel-product-api
 
 🎯 Obiettivi**
