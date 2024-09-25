@@ -21,6 +21,6 @@ class Category extends Model
     ///// Relations /////
     public function sponsorships()
     {
-        return $this->belongsToMany(Product::class, 'product_category');
+        return $this->belongsToMany(Product::class);
     }
 }
