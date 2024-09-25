@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_category', function (Blueprint $table) {
-
-            // Foreign key
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
+        Schema::create('category_product', function (Blueprint $table) {
 
             // Foreign key
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
 
+            // Foreign key
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
+
+
             // Unique index
             $table->unique(['product_id', 'category_id']);
-
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_category');
+        Schema::dropIfExists('category_product');
     }
 };

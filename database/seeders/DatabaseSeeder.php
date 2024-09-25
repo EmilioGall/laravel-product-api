@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 
             ProductsTableSeeder::class,
             CategoriesTableSeeder::class,
+            CategoryProductTableSeeder::class,
 
 
         ]);
