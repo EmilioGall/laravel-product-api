@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -10,9 +11,34 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     *
+     *  @OA\Get(
+     *      path="/api/products",
+     *      tags={"Product"},
+     *      summary="Get all Products",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Success"
+     *      )
+     *  )
+     *
+     */
     public function index()
     {
-        //
+
+        //eager loading
+        $products = Product::with(['categories'])->get();
+
+        dd($products);
+
+        $data = [
+
+            'result' => $products,
+            'success' => true
+        ];
+
+        return response()->json($data);
     }
 
     /**
@@ -24,8 +50,30 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
+     *
+     *  @OA\Post(
+     *      path="/api/product",
+     *      tags= {"Product"},
+     *      summary="Insert new product",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Success"
+     *      ),
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  @OA\Property(property="name", type="string"),
+     *                  @OA\Property(property="price", type="decimal"),
+     *                  @OA\Property(property="image", type="string"),
+     *                  @OA\Property(property="description", type="text"),
+     *                  @OA\Property(property="highlighted", type="boolean")
+     *              )
+     *          )
+     *      )
+     *  )
+     *
+     **/
     public function store(Request $request)
     {
         //
@@ -34,9 +82,17 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $productId)
     {
-        //
+        //eager loading
+        $products = Product::with(['categories'])->get()->where('id', $productId)->first();
+
+        $data = [
+            'result' => $products,
+            'success' => true
+        ];
+
+        return response()->json($data);
     }
 
     /**
