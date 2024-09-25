@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -30,7 +31,7 @@ class ProductController extends Controller
         //eager loading
         $products = Product::with(['categories'])->get();
 
-        dd($products);
+        // dd($products);
 
         $data = [
 
@@ -39,6 +40,7 @@ class ProductController extends Controller
         ];
 
         return response()->json($data);
+
     }
 
     /**
@@ -76,7 +78,30 @@ class ProductController extends Controller
      **/
     public function store(Request $request)
     {
-        //
+
+        $data = $request->all();
+
+        // dd($data);
+
+        if ($request->hasFile('image')) {
+
+            // Save file in storage and create a new folder [products_images]
+            $image_path = Storage::put('products_images', $request->image);
+
+            // salvo il path del file nei dati da inserire nel daabase
+            $data['image'] = $image_path;
+        }
+
+        $newProduct = new Product();
+
+        $newProduct->fill($data);
+
+        $newProduct->save();
+
+        return response()->json([
+            'success' => true
+        ]);
+
     }
 
     /**
