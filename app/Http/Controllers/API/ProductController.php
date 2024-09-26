@@ -41,7 +41,6 @@ class ProductController extends Controller
         ];
 
         return response()->json($data);
-
     }
 
     /**
@@ -89,7 +88,7 @@ class ProductController extends Controller
             // Save file in storage and create a new folder [products_images]
             $image_path = Storage::put('products_images', $request->image);
 
-            // salvo il path del file nei dati da inserire nel daabase
+            // save file path in data
             $data['image'] = $image_path;
         }
 
@@ -110,7 +109,6 @@ class ProductController extends Controller
             'response' => 200,
             'success' => true
         ]);
-
     }
 
     /**
@@ -118,11 +116,11 @@ class ProductController extends Controller
      */
     public function show(string $productId)
     {
-        //eager loading
-        $products = Product::with(['categories'])->get()->where('id', $productId)->first();
+
+        $product = Product::with(['categories'])->get()->where('id', $productId)->first();
 
         $data = [
-            'result' => $products,
+            'result' => $product,
             'response' => 200,
             'success' => true
         ];
@@ -141,9 +139,43 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $productId)
     {
-        //
+
+        $product = Product::with(['categories'])->get()->where('id', $productId)->first();
+
+        $data = $request->all();
+
+        // dd($data, $product);
+
+        if ($request->hasFile('image')) {
+
+            // Save file in storage and create a new folder [products_images]
+            $image_path = Storage::put('products_images', $request->image);
+
+            // save file path in data
+            $data['image'] = $image_path;
+        }
+
+        $data['price'] = floatval($data['price']);
+        $data['highlighted'] = intval($data['highlighted']);
+
+        // dd($data);
+
+        $product->update($data);
+
+        // Update relationship between categpries extracted from request and product
+        if ($request->has('categories')) {
+
+            $product->categories()->sync($request->categories);
+        }
+
+        dd($data, $product);
+
+        return response()->json([
+            'response' => 200,
+            'success' => true
+        ]);
     }
 
     /**
