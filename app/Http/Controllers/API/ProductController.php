@@ -20,7 +20,7 @@ class ProductController extends Controller
      *      summary="Get all Products",
      *      @OA\Response(
      *          response=200,
-     *          description="Success"
+     *          success="true"
      *      )
      *  )
      *
@@ -36,6 +36,7 @@ class ProductController extends Controller
         $data = [
 
             'result' => $products,
+            'response' => 200,
             'success' => true
         ];
 
@@ -59,7 +60,7 @@ class ProductController extends Controller
      *      summary="Insert new product",
      *      @OA\Response(
      *          response=200,
-     *          description="Success"
+     *          success="true"
      *      ),
      *      @OA\RequestBody(
      *          @OA\MediaType(
@@ -99,6 +100,7 @@ class ProductController extends Controller
         $newProduct->save();
 
         return response()->json([
+            'response' => 200,
             'success' => true
         ]);
 
