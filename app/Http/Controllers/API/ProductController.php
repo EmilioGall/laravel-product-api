@@ -181,8 +181,22 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $productId)
     {
-        //
+
+        $product = Product::with(['categories'])->get()->where('id', $productId)->first();
+
+        // Se la casa ha l'immagine viene cancellata
+        if ($product->image) {
+
+            Storage::delete('products_images', $product->image);
+        }
+
+        $product->delete();
+
+        return response()->json([
+            'response' => 200,
+            'success' => true
+        ]);
     }
 }
