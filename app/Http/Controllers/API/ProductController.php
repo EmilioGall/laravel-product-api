@@ -95,9 +95,16 @@ class ProductController extends Controller
 
         $newProduct = new Product();
 
+        $data['price'] = floatval($data['price']);
+        $data['highlighted'] = intval($data['highlighted']);
+
+        // dd($data);
+
         $newProduct->fill($data);
 
         $newProduct->save();
+
+        // dd($newProduct);
 
         return response()->json([
             'response' => 200,
@@ -116,6 +123,7 @@ class ProductController extends Controller
 
         $data = [
             'result' => $products,
+            'response' => 200,
             'success' => true
         ];
 
