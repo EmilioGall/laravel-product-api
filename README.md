@@ -1,5 +1,3 @@
-Here is the README.md file for the "laravel-product-api" project:
-
 # Laravel Product API
 
 A Laravel-based API that manages products and categories. This project provides a simple RESTful API to handle CRUD operations for products, with support for categories and product filtering.
